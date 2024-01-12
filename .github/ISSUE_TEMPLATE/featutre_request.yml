@@ -1,0 +1,15 @@
+name: Feature Request
+description: Create a report to add a new feature
+title: "feat: "
+labels:
+  - ":sparkles: feature"
+
+body:
+  - type: input
+    attributes:
+      label: Feature Name
+      description: Describe the feature you want to add
+  - type: textarea
+    attributes:
+      label: Feature Description
+      description: Describe the feature you want to add
