@@ -7,6 +7,13 @@ on:
       - "**.go"
       - "go.mod"
       - "go.sum"
+  push:
+    branches:
+      - main
+    paths:
+      - "**.go"
+      - "go.mod"
+      - "go.sum"
   workflow_dispatch:
 
 jobs:
@@ -44,6 +51,7 @@ jobs:
           mv coverage_with_header.txt coverage.txt
           cat coverage.txt
       - name: Find existing comment
+        if: github.event_name == 'pull_request'
         id: find_comment
         uses: peter-evans/find-comment@v2
         with:
