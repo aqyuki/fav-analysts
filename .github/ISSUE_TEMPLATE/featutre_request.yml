@@ -5,10 +5,6 @@ labels:
   - ":sparkles: feature"
 
 body:
-  - type: input
-    attributes:
-      label: Feature Name
-      description: Describe the feature you want to add
   - type: textarea
     attributes:
       label: Feature Description
