@@ -70,7 +70,7 @@ func Test_convertLoggingLevel(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			actual := covertLoggingLevel(tt.level)
+			actual := convertLoggingLevel(tt.level)
 			if actual != tt.excepted {
 				t.Errorf("convertLoggingLevel should return %s but received %s", tt.excepted, actual)
 			}

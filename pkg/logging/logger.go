@@ -62,7 +62,7 @@ func NewLoggerWithConfig(develop bool, level string) *slog.Logger {
 	} else {
 		handler = slog.NewJSONHandler(os.Stdin, &slog.HandlerOptions{
 			AddSource: false,
-			Level:     covertLoggingLevel(level),
+			Level:     convertLoggingLevel(level),
 		})
 	}
 	return slog.New(handler)
@@ -76,8 +76,8 @@ func DefaultLogger() *slog.Logger {
 	return defaultLogger
 }
 
-// covertLoggingLevel converts string to slog.Level
-func covertLoggingLevel(s string) slog.Level {
+// convertLoggingLevel converts string to slog.Level
+func convertLoggingLevel(s string) slog.Level {
 	switch strings.ToLower(strings.TrimSpace(s)) {
 	case LevelDebug:
 		return slog.LevelDebug
