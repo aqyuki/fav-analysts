@@ -34,40 +34,48 @@ func Test_NewLogger(t *testing.T) {
 func Test_convertLoggingLevel(t *testing.T) {
 	t.Parallel()
 
-	t.Run("convertLoggingLevel should return debug level", func(t *testing.T) {
-		actual := covertLoggingLevel(LevelDebug)
-		if actual != slog.LevelDebug {
-			t.Errorf("convertLoggingLevel should return debug level but received %s", actual)
-		}
-	})
+	tests := []struct {
+		name     string
+		level    string
+		excepted slog.Level
+	}{
+		{
+			name:     "should return debug level",
+			level:    LevelDebug,
+			excepted: slog.LevelDebug,
+		},
+		{
+			name:     "should return info level",
+			level:    LevelInfo,
+			excepted: slog.LevelInfo,
+		},
+		{
+			name:     "should return warn level",
+			level:    LevelWarn,
+			excepted: slog.LevelWarn,
+		},
+		{
+			name:     "should return error level",
+			level:    LevelError,
+			excepted: slog.LevelError,
+		},
+		{
+			name:     "should return info level when unknown strings",
+			level:    "",
+			excepted: slog.LevelInfo,
+		},
+	}
 
-	t.Run("convertLoggingLevel should return info level", func(t *testing.T) {
-		actual := covertLoggingLevel(LevelInfo)
-		if actual != slog.LevelInfo {
-			t.Errorf("convertLoggingLevel should return info level but received %s", actual)
-		}
-	})
-
-	t.Run("convertLoggingLevel should return warn level", func(t *testing.T) {
-		actual := covertLoggingLevel(LevelWarn)
-		if actual != slog.LevelWarn {
-			t.Errorf("convertLoggingLevel should return warn level but received %s", actual)
-		}
-	})
-
-	t.Run("convertLoggingLevel should return error level", func(t *testing.T) {
-		actual := covertLoggingLevel(LevelError)
-		if actual != slog.LevelError {
-			t.Errorf("convertLoggingLevel should return error level but received %s", actual)
-		}
-	})
-
-	t.Run("convertLoggingLevel should return info level when unknown strings", func(t *testing.T) {
-		actual := covertLoggingLevel("")
-		if actual != slog.LevelInfo {
-			t.Errorf("convertLoggingLevel should return info level but received %s", actual)
-		}
-	})
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			actual := covertLoggingLevel(tt.level)
+			if actual != tt.excepted {
+				t.Errorf("convertLoggingLevel should return %s but received %s", tt.excepted, actual)
+			}
+		})
+	}
 }
 
 func Test_Context(t *testing.T) {
