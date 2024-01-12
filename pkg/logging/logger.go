@@ -1,10 +1,14 @@
 package logging
 
 import (
+	"context"
 	"log/slog"
 	"os"
 	"strings"
+	"sync"
 )
+
+type contextKey string
 
 const (
 	// EnvLoggingMode is a environment variable name for logging mode
@@ -29,6 +33,14 @@ const (
 	LevelError = "error"
 	// DefaultLevel is a default level
 	DefaultLevel = LevelInfo
+
+	// loggerKey is a context Key for logger
+	loggerKey contextKey = "logger"
+)
+
+var (
+	defaultLogger     *slog.Logger
+	defaultLoggerOnce sync.Once
 )
 
 // NewLoggerFromEnv creates a new logger from configuration from environment variables.
@@ -56,6 +68,14 @@ func NewLoggerWithConfig(develop bool, level string) *slog.Logger {
 	return slog.New(handler)
 }
 
+// DefaultLogger returns a default logger.
+func DefaultLogger() *slog.Logger {
+	defaultLoggerOnce.Do(func() {
+		defaultLogger = NewLoggerFromEnv()
+	})
+	return defaultLogger
+}
+
 // covertLoggingLevel converts string to slog.Level
 func covertLoggingLevel(s string) slog.Level {
 	switch strings.ToLower(strings.TrimSpace(s)) {
@@ -70,4 +90,18 @@ func covertLoggingLevel(s string) slog.Level {
 	default:
 		return slog.LevelInfo
 	}
+}
+
+// WithLogger creates a context which contains a given logger.
+func WithLogger(ctx context.Context, logger *slog.Logger) context.Context {
+	return context.WithValue(ctx, loggerKey, logger)
+}
+
+// UnwrapContext returns a logger from a given context.
+func UnwrapContext(ctx context.Context) *slog.Logger {
+	l, ok := ctx.Value(loggerKey).(*slog.Logger)
+	if ok {
+		return l
+	}
+	return DefaultLogger()
 }
