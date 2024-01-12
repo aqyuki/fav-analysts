@@ -1,6 +1,7 @@
 package logging
 
 import (
+	"context"
 	"log/slog"
 	"testing"
 )
@@ -65,6 +66,38 @@ func Test_convertLoggingLevel(t *testing.T) {
 		actual := covertLoggingLevel("")
 		if actual != slog.LevelInfo {
 			t.Errorf("convertLoggingLevel should return info level but received %s", actual)
+		}
+	})
+}
+
+func Test_Context(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Context should return a logger which is same as given logger", func(t *testing.T) {
+		t.Parallel()
+
+		ctx := context.Background()
+		logger := NewLoggerWithConfig(true, LevelDebug)
+
+		actual := WithLogger(ctx, logger)
+		if actual == nil {
+			t.Errorf("WithLogger should return a context but received nil")
+		}
+
+		if UnwrapContext(actual) != logger {
+			t.Errorf("UnwrapContext should return a logger which is same as given logger")
+		}
+	})
+
+	t.Run("Context should returns a default logger", func(t *testing.T) {
+		t.Parallel()
+
+		ctx := context.Background()
+		actual := UnwrapContext(ctx)
+		if actual == nil {
+			t.Errorf("UnwrapContext should return a logger but received nil")
+		} else if actual != DefaultLogger() {
+			t.Errorf("UnwrapContext should return a default logger")
 		}
 	})
 }
