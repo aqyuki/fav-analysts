@@ -85,7 +85,7 @@ func loadJSON(path string) (*Config, error) {
 		return nil, err
 	}
 
-	var config Config
+	config := *defaultConfig()
 	if err := json.Unmarshal(b, &config); err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func loadYAML(path string) (*Config, error) {
 		return nil, err
 	}
 
-	var config Config
+	config := *defaultConfig()
 	if err := yaml.Unmarshal(b, &config); err != nil {
 		return nil, err
 	}
