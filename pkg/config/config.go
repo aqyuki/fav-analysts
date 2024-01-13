@@ -39,6 +39,15 @@ var (
 	ErrInvalidFileType = errors.New("given file type is not supported")
 )
 
+func defaultServerConfig() *ServerConfig {
+	return &ServerConfig{
+		Port:            8080,
+		EnableTLS:       false,
+		SecretKeyPath:   "",
+		CertificatePath: "",
+	}
+}
+
 // LoadFromFile loads the configuration from a specified file.
 // This function will return an error if the file does not exist or is not a valid configuration file.
 // This function suggests that the file type from extension.
