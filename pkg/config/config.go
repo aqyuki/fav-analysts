@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/jesseduffield/yaml"
 )
 
@@ -27,9 +28,9 @@ type ServerConfig struct {
 
 	// NOTE: SecretKeyPath and CertificatePath are the required options when EnableTLS is true.
 	// SecretKeyPath is the path to the secret key file.
-	SecretKeyPath string `yaml:"secret" json:"secret"`
+	SecretKeyPath string `yaml:"secret" json:"secret" validate:"tls_require"`
 	// CertificatePath is the path to the certificate file.
-	CertificatePath string `yaml:"certificate" json:"certificate"`
+	CertificatePath string `yaml:"certificate" json:"certificate" validate:"tls_require"`
 }
 
 type loader func(path string) (*Config, error)
@@ -103,4 +104,14 @@ func loadBinary(path string) ([]byte, error) {
 		return nil, err
 	}
 	return b, nil
+}
+
+func ValidateServerConfig(cnf *ServerConfig) error {
+	v := validator.New(validator.WithRequiredStructEnabled())
+	v.RegisterValidation("tls_require", TLSRequire)
+
+	if err := v.Struct(cnf); err != nil {
+		return err
+	}
+	return nil
 }
