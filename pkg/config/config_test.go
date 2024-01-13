@@ -7,6 +7,34 @@ import (
 	"testing"
 )
 
+func Test_defaultServerConfig(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		want *ServerConfig
+	}{
+		{
+			name: "should success to create default server config",
+			want: &ServerConfig{
+				Port:      8080,
+				EnableTLS: false,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(sub *testing.T) {
+			sub.Parallel()
+
+			if got := defaultServerConfig(); !reflect.DeepEqual(got, tt.want) {
+				sub.Errorf("defaultServerConfig() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestLoadFromFile(t *testing.T) {
 	t.Parallel()
 
