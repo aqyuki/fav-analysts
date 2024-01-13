@@ -4,7 +4,7 @@ go 1.21.6
 
 require (
 	github.com/go-playground/validator/v10 v10.16.0
-	github.com/jesseduffield/yaml v2.1.0+incompatible
+	github.com/jesseduffield/yaml v2.2.2+incompatible
 )
 
 require (
