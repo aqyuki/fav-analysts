@@ -48,6 +48,12 @@ func defaultServerConfig() *ServerConfig {
 	}
 }
 
+func defaultConfig() *Config {
+	return &Config{
+		Server: *defaultServerConfig(),
+	}
+}
+
 // LoadFromFile loads the configuration from a specified file.
 // This function will return an error if the file does not exist or is not a valid configuration file.
 // This function suggests that the file type from extension.
