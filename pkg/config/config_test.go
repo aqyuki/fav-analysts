@@ -283,3 +283,63 @@ func Test_loadBinary(t *testing.T) {
 		})
 	}
 }
+
+func Test_ValidateConfig(t *testing.T) {
+	t.Parallel()
+
+	type args struct {
+		config *ServerConfig
+	}
+
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "should success to validate config",
+			args: args{
+				config: &ServerConfig{
+					Port:      8080,
+					EnableTLS: false,
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "should fail to validate config because secret key path is empty",
+			args: args{
+				config: &ServerConfig{
+					Port:            8080,
+					EnableTLS:       true,
+					SecretKeyPath:   "",
+					CertificatePath: "test",
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "should fail to validate config because certificate path is empty",
+			args: args{
+				config: &ServerConfig{
+					Port:            8080,
+					EnableTLS:       true,
+					SecretKeyPath:   "test",
+					CertificatePath: "",
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(sub *testing.T) {
+			sub.Parallel()
+
+			if err := ValidateServerConfig(tt.args.config); (err != nil) != tt.wantErr {
+				sub.Errorf("ValidateConfig() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
