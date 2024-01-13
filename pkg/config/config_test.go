@@ -284,7 +284,7 @@ func Test_loadBinary(t *testing.T) {
 	}
 }
 
-func Test_ValidateConfig(t *testing.T) {
+func Test_ValidateServerConfig(t *testing.T) {
 	t.Parallel()
 
 	type args struct {
