@@ -284,6 +284,56 @@ func Test_loadBinary(t *testing.T) {
 	}
 }
 
+func Test_ValidateConfig(t *testing.T) {
+	t.Parallel()
+
+	type args struct {
+		config *Config
+	}
+
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "should success to validate config",
+			args: args{
+				config: &Config{
+					Server: ServerConfig{
+						Port:      8080,
+						EnableTLS: false,
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "should fail to validate config because server config is invalid",
+			args: args{
+				config: &Config{
+					Server: ServerConfig{
+						Port:      8080,
+						EnableTLS: true,
+					},
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(sub *testing.T) {
+			sub.Parallel()
+
+			if err := ValidateConfig(tt.args.config); (err != nil) != tt.wantErr {
+				sub.Errorf("ValidateConfig() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func Test_ValidateServerConfig(t *testing.T) {
 	t.Parallel()
 
