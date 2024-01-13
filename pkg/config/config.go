@@ -106,6 +106,7 @@ func loadBinary(path string) ([]byte, error) {
 	return b, nil
 }
 
+// ValidateServerConfig validates the server configuration.
 func ValidateServerConfig(cnf *ServerConfig) error {
 	v := validator.New(validator.WithRequiredStructEnabled())
 	v.RegisterValidation("tls_require", TLSRequire)
