@@ -106,6 +106,14 @@ func loadBinary(path string) ([]byte, error) {
 	return b, nil
 }
 
+// ValidateConfig validates the configuration.
+func ValidateConfig(cnf *Config) error {
+	if err := ValidateServerConfig(&cnf.Server); err != nil {
+		return err
+	}
+	return nil
+}
+
 // ValidateServerConfig validates the server configuration.
 func ValidateServerConfig(cnf *ServerConfig) error {
 	v := validator.New(validator.WithRequiredStructEnabled())
