@@ -35,6 +35,33 @@ func Test_defaultServerConfig(t *testing.T) {
 	}
 }
 
+func Test_defaultConfig(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		want *Config
+	}{
+		{
+			name: "should success to create default config",
+			want: &Config{
+				Server: *defaultServerConfig(),
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(sub *testing.T) {
+			sub.Parallel()
+
+			if got := defaultConfig(); !reflect.DeepEqual(got, tt.want) {
+				sub.Errorf("defaultConfig() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestLoadFromFile(t *testing.T) {
 	t.Parallel()
 
