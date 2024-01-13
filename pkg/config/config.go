@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/jesseduffield/yaml"
+	"gopkg.in/yaml.v3"
 )
 
 // Config holds the application configuration.
